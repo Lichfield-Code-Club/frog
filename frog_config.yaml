@@ -11,9 +11,19 @@ frog:
   right: False
   drop_rate: 4
   gravity: -20
+  bg_music:
+  bg_music_volume:
+  road_noise_fpath: 'sounds/road-noise.wav'
+  road_noise_volume: 0.7
+  water_noise_fpath: 
+  water_noise_volume: 0.6
   images: 
     - name: 'background'
       fpath: 'images/background.png'
+      sound:
+        fpath: 
+        volume: 0.5
+        fx: None
       start: 
           x: 0
           y: 0 
@@ -26,6 +36,10 @@ frog:
       gravity: 0
     - name: 'frog'
       fpath: 'images/frog.png'
+      sound:
+        fpath: 'sounds/frog-jump01.mp3'
+        volume: 0.5
+        fx: None
       start: 
           x: 640
           y: 880
@@ -38,6 +52,10 @@ frog:
       gravity: -20
     - name: 'log'
       fpath: 'images/log.png'
+      sound:
+        fpath:
+        volume: 0.5
+        fx: None
       start: 
           x: 640
           y: 300
@@ -50,6 +68,10 @@ frog:
       gravity: 0 # doesn't move on y axis
     - name: 'car'
       fpath: 'images/car.png'
+      sound:
+        fpath: 
+        volume: 0.5
+        fx: None
       start: 
           x: 640
           y: 600

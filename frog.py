@@ -18,6 +18,9 @@ def LoadImages(config):
             image['surface'] = pygame.image.load(fpath).convert_alpha()
             coords = (image['coord']['x'],image['coord']['y'])
             image['rect'] = image['surface'].get_rect(midbottom=coords)
+            if image['sound']['fpath']: 
+                image['sound']['fx'] = pygame.mixer.Sound(image['sound']['fpath'])
+                image['sound']['fx'].set_volume(image['sound']['volume'])
             images.append(image)
     return images
 
@@ -27,6 +30,8 @@ def InitGame(config):
     pygame.display.set_caption(config['game_title'])
     config['screen'] = pygame.display.set_mode((screen_width,screen_height))
     config['clock'] = pygame.time.Clock()
+    pygame.mixer.music.load(config['road_noise_fpath'])
+    pygame.mixer.music.set_volume(config['road_noise_volume'])
     return LoadImages(config)
 
 def Draw(config):
@@ -42,6 +47,7 @@ def Move(config):
                 config['drop'] = False
             if config['jump']: 
                 image['coord']['y'] += image['gravity']
+                if image['sound']['fpath']: image['sound']['fx'].play()
                 config['jump'] = False
         if image['speed'] > 0 and image['name'] == 'frog':
             if config['left']: 
@@ -82,6 +88,8 @@ config_file = f'{game_name}_config.yaml'
 config = ReadConfig(game_name,config_file)
 
 pygame.init()
-if InitGame(config): Play(config)
+if InitGame(config): 
+    pygame.mixer.music.play(-1,config['road_noise_volume'])    
+    Play(config)
 pygame.quit()
 exit()
