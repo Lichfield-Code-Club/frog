@@ -1,0 +1,63 @@
+frog:
+  game_title: 'Frog'
+  screen: None
+  screen_width: 1280  
+  screen_height: 960
+  frame_rate: 60
+  clock: None
+  jump: False
+  drop: False
+  left: False
+  right: False
+  drop_rate: 4
+  gravity: -20
+  images: 
+    - name: 'background'
+      fpath: 'images/background.png'
+      start: 
+          x: 0
+          y: 0 
+      coord: 
+          x: 0
+          y: 0 
+      surface: None 
+      rect: None
+      speed: 0
+      gravity: 0
+    - name: 'frog'
+      fpath: 'images/frog.png'
+      start: 
+          x: 640
+          y: 880
+      coord: 
+          x: 640
+          y: 880
+      surface: None 
+      rect: None
+      speed: 4
+      gravity: -20
+    - name: 'log'
+      fpath: 'images/log.png'
+      start: 
+          x: 640
+          y: 300
+      coord: 
+          x: 640
+          y: 300
+      surface: None 
+      rect: None
+      speed: 8
+      gravity: 0 # doesn't move on y axis
+    - name: 'car'
+      fpath: 'images/car.png'
+      start: 
+          x: 640
+          y: 600
+      coord: 
+          x: 640
+          y: 600
+      surface: None 
+      rect: None
+      speed: 8
+      gravity: 0 # doesn't move on y axis
+  
