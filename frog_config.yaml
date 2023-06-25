@@ -1,25 +1,44 @@
 frog:
   game_title: 'Frog'
-  screen: None
+  screen: 
   screen_width: 1280  
   screen_height: 960
   frame_rate: 60
-  clock: None
-  jump: False
-  drop: False
-  left: False
-  right: False
-  drop_rate: 4
-  gravity: -20
+  fade_rate: 10
+  fade_size: 0
+  hits: 0
+  small_text:
+    size: 20
+    style: 'Lucida Sans'
+    font:
+  large_text:
+    size: 24
+    style: 'Lucida Sans'
+    font:
+  score:
+    current: 0
+    highest: 0
+    fpath: 'scores.txt'
+    status:
+  clock: 
+  jump:
+  back:
+  left:
+  right:
   bg_music:
   bg_music_volume:
   road_noise_fpath: 'sounds/road-noise.wav'
   road_noise_volume: 0.7
   water_noise_fpath: 
   water_noise_volume: 0.6
+  max_car_speed: 10
+  min_car_speed: 2
+  max_log_speed: 12
+  min_log_speed: 3
   images: 
     - name: 'background'
       fpath: 'images/background.png'
+      visible: True
       sound:
         fpath: 
         volume: 0.5
@@ -27,15 +46,19 @@ frog:
       start: 
           x: 0
           y: 0 
-      coord: 
-          x: 0
-          y: 0 
+      road:
+          start: 770
+          end: 450
+      water:
+          start: 410
+          end: 46
       surface: None 
       rect: None
       speed: 0
-      gravity: 0
+      jump_size: 0
     - name: 'frog'
-      fpath: 'images/frog.png'
+      fpath: 'images/frog40.png'
+      visible: True
       sound:
         fpath: 'sounds/frog-jump01.mp3'
         volume: 0.5
@@ -43,43 +66,199 @@ frog:
       start: 
           x: 640
           y: 880
-      coord: 
-          x: 640
-          y: 880
       surface: None 
       rect: None
       speed: 4
-      gravity: -20
-    - name: 'log'
+      jump_size: -40
+    - name: 'log1'
       fpath: 'images/log.png'
+      visible: True
       sound:
-        fpath:
+        fpath: sounds/watery-splash.wav
         volume: 0.5
         fx: None
       start: 
           x: 640
           y: 300
-      coord: 
+      surface: None 
+      rect: None
+      speed: 8
+      jump_size: 0 # doesn't move on y axis
+    - name: 'log2'
+      fpath: 'images/log.png'
+      visible: True
+      sound:
+        fpath: sounds/watery-splash.wav
+        volume: 0.5
+        fx: None
+      start: 
+          x: 640
+          y: 400
+      surface: None 
+      rect: None
+      speed: 7
+      jump_size: 0 # doesn't move on y axis
+    - name: 'log3'
+      fpath: 'images/log.png'
+      visible: True
+      sound:
+        fpath: sounds/watery-splash.wav
+        volume: 0.5
+        fx: None
+      start: 
+          x: 640
+          y: 430
+      surface: None 
+      rect: None
+      speed: 10
+      jump_size: 0 # doesn't move on y axis
+    - name: 'log4'
+      fpath: 'images/log.png'
+      visible: True
+      sound:
+        fpath: sounds/watery-splash.wav
+        volume: 0.5
+        fx: None
+      start: 
           x: 640
           y: 300
       surface: None 
       rect: None
       speed: 8
-      gravity: 0 # doesn't move on y axis
-    - name: 'car'
+      jump_size: 0 # doesn't move on y axis
+    - name: 'log5'
+      fpath: 'images/log.png'
+      visible: True
+      sound:
+        fpath: sounds/watery-splash.wav
+        volume: 0.5
+        fx: None
+      start: 
+          x: 640
+          y: 300
+      surface: None 
+      rect: None
+      speed: 8
+      jump_size: 0 # doesn't move on y axis
+    - name: 'log6'
+      fpath: 'images/log.png'
+      visible: True
+      sound:
+        fpath: sounds/watery-splash.wav
+        volume: 0.5
+        fx: None
+      start: 
+          x: 640
+          y: 300
+      surface: None 
+      rect: None
+      speed: 8
+      jump_size: 0 # doesn't move on y axis
+    - name: 'log7'
+      fpath: 'images/log.png'
+      visible: True
+      sound:
+        fpath: sounds/watery-splash.wav
+        volume: 0.5
+        fx: None
+      start: 
+          x: 640
+          y: 300
+      surface: None 
+      rect: None
+      speed: 8
+      jump_size: 0 # doesn't move on y axis
+    - name: 'log8'
+      fpath: 'images/log.png'
+      visible: True
+      sound:
+        fpath: sounds/watery-splash.wav
+        volume: 0.5
+        fx: None
+      start: 
+          x: 640
+          y: 300
+      surface: None 
+      rect: None
+      speed: 8
+      jump_size: 0 # doesn't move on y axis
+    - name: 'log9'
+      fpath: 'images/log.png'
+      visible: True
+      sound:
+        fpath: sounds/watery-splash.wav
+        volume: 0.5
+        fx: None
+      start: 
+          x: 640
+          y: 300
+      surface: None 
+      rect: None
+      speed: 8
+      jump_size: 0 # doesn't move on y axis
+    - name: 'log10'
+      fpath: 'images/log.png'
+      visible: True
+      sound:
+        fpath: sounds/watery-splash.wav
+        volume: 0.5
+        fx: None
+      start: 
+          x: 640
+          y: 300
+      surface: None 
+      rect: None
+      speed: 8
+      jump_size: 0 # doesn't move on y axis
+    - name: 'car1'
       fpath: 'images/car.png'
+      visible: True
+      sound:
+        fpath: sounds/car-crash.mp3
+        volume: 0.5
+        fx: 
+      start: 
+          x: 640
+          y: 600
+      surface: None 
+      rect: None
+      speed: 8
+    - name: 'car2'
+      fpath: 'images/car.png'
+      visible: True
+      sound:
+        fpath: sounds/car-crash.mp3
+        volume: 0.5
+        fx: 
+      start: 
+          x: 640
+          y: 760
+      surface: None 
+      rect: None
+      speed: 6
+    - name: 'car3'
+      fpath: 'images/car.png'
+      visible: True
+      sound:
+        fpath: sounds/car-crash.mp3
+        volume: 0.5
+        fx: 
+      start: 
+          x: 640
+          y: 700
+      surface: None 
+      rect: None
+      speed: 7
+    - name: 'ouch'
+      fpath: 'images/ouch64.png'
+      visible: False
       sound:
         fpath: 
-        volume: 0.5
+        volume:
         fx: None
       start: 
-          x: 640
-          y: 600
-      coord: 
-          x: 640
-          y: 600
+          x: 0
+          y: 0 
       surface: None 
       rect: None
-      speed: 8
-      gravity: 0 # doesn't move on y axis
-  
+      speed: 0
