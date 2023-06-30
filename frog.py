@@ -1,12 +1,41 @@
 import pygame
+import os
 import yaml
-from glob import glob
-from images import LoadImages
+from random import randint
+from copy import deepcopy
 
 def ReadConfig(game_name,filename):
     with open(filename,'r') as fr:
         config = yaml.safe_load(fr)
     return config[game_name]
+
+def LoadImages(config):
+    images = []
+    background = [x for x in config['images'] if x['name'] == 'background'][0]
+    num_logs = 0
+    for image in config['images']:
+        fpath = image['fpath']
+        if not os.path.exists(fpath): 
+            print(f'Cannot locate image file: {fpath}')
+            return
+        else:
+            image['surface'] = pygame.image.load(fpath).convert_alpha()
+            image['rect'] = image['surface'].get_rect()
+            image['rect'].x = image['start']['x']
+            image['rect'].y = image['start']['y']
+            if image['sound']['fpath']: 
+                image['sound']['fx'] = pygame.mixer.Sound(image['sound']['fpath'])
+                image['sound']['fx'].set_volume(image['sound']['volume'])
+            if image['name'].startswith('car'): 
+                image['speed'] = randint(config['min_car_speed'],config['max_car_speed'])
+                image['rect'].y = randint(background['road']['end'],background['road']['start'])
+            if image['name'].startswith('log'): 
+                image['speed'] = randint(config['min_log_speed'],config['max_log_speed'])
+                image['rect'].y = randint(background['water']['end'],background['water']['start'])
+                image['rect'].y = background['water']['end'] + (num_logs * image['rect'].height)
+                num_logs += 1
+            images.append(image)
+    return images
 
 def InitGame(config):
     screen_width = config['screen_width']
@@ -20,19 +49,9 @@ def InitGame(config):
     config['small_text']['font'] = pygame.font.SysFont(config['small_text']['style'],config['small_text']['size'])
     return LoadImages(config)
 
-def draw_text(screen,text, font, text_col, x, y):
-	img = font.render(text, True, text_col)
-	screen.blit(img, (x, y))
-
-def draw_images(config,category):
-    for image in config['objects'][category]:
-        if image['visible']:
-            config['screen'].blit(image['surface'],(image['rect'].x,image['rect'].y))
-
-def Draw(config):
-    for category in config['objects'].keys():
-        draw_images(config,category)
-    for bg in config['objects']['backgrounds']:
+def draw_zones(config):
+    backgrounds = [x for x in config['images'] if x['name'] == 'background']
+    for bg in backgrounds:
         for zone in ['base','road','water']:
             start = bg[zone]['start']
             end = bg[zone]['end']
@@ -40,88 +59,87 @@ def Draw(config):
             draw_text(config['screen'],msg,config['large_text']['font'], 'white', 40, start)
             msg = f"{zone} end: {end} ---------------------------------------------------"
             draw_text(config['screen'],msg,config['large_text']['font'], 'white', 40, end)
+
+def draw_text(screen,text, font, text_col, x, y):
+	img = font.render(text, True, text_col)
+	screen.blit(img, (x, y))
+
+def Draw(config):
+    for image in config['images']:
+        if image['visible'] and not image['name'].startswith('frog'):
+            config['screen'].blit(image['surface'],(image['rect'].x,image['rect'].y))
+    for image in config['images']:
+        if image['visible'] and image['name'].startswith('frog'):
+            config['screen'].blit(image['surface'],(image['rect'].x,image['rect'].y))
+    draw_zones(config)
     pygame.display.update()
 
-def boundary_check(config,image):
-    rect = image['rect']
-    if rect.x < 0: rect.x = config['screen_width']
-    if rect.x > config['screen_width']: rect.x = 0 # wrap around
-    if rect.y < 0: rect.y = config['screen_height']
-    if rect.y > config['screen_height']: rect.y = 0 # wrap around
-    return rect
-
-def move_frog(config):
-    for frog in config['objects']['frogs']: 
-        if config['back']: 
-            frog['rect'].y += frog['speed']
-            config['back'] = False
-
-        if config['jump']: 
-            frog['rect'].y -= frog['jump']
-            frog['sound']['fx'].play()
-            config['jump'] = False
-            
-        if config['up']: 
-            frog['rect'].x -= frog['speed']
-            config['up'] = False
-
-        if config['left']: 
-            frog['rect'].x -= frog['speed']
-            config['left'] = False
-
-        if config['right']: 
-            frog['rect'].x += frog['speed']
-            config['right'] = False
-
 def Move(config):
-    move_frog(config)
-    for category in ['cars','logs']:
-        for image in config['objects'][category]: image['rect'].x -= image['speed']
-    for category in ['cars','logs','frogs']:
-        for image in config['objects'][category]: image['rect'] = boundary_check(config,image)
+    ignore = ['background','ouch']
+    for image in config['images']:
+        if not image['name'] in ignore:
+            if config['back']: 
+                image['rect'].y += image['jump_size'] * -1
+                config['back'] = False
+            if config['jump']: 
+                image['rect'].y += image['jump_size']
+                if image['sound']['fpath']: image['sound']['fx'].play()
+                config['jump'] = False
+            if image['speed'] > 0 and image['name'] == 'frog':
+                if config['left']: 
+                    image['rect'].x -= image['speed']
+                    config['left'] = False
+                if config['right']: 
+                    image['rect'].x += image['speed']
+                    config['right'] = False
+            if image['speed'] > 0 and image['name'] != 'frog':
+                    image['rect'].x -= image['speed']
+                    if image['rect'].x <= 0: image['rect'].x= config['screen_width']
+            
+            if image['rect'].x < 0: image['rect'].x = 0
+            if image['rect'].y < 0: image['rect'].y = 0
+
+            if image['rect'].x > config['screen_width']: image['rect'].x = config['screen_width']
+            if image['rect'].y > config['screen_height']: image['rect'].y = config['screen_height']
     return True
 
 def Collision(config):
-    frogs = config['objects']['frogs']
-    cars = config['objects']['cars']
-    logs = config['objects']['logs']
-    backgrounds = config['objects']['backgrounds']
-
-    road_start  = backgrounds[0]['road']['end']
-    road_end    = backgrounds[0]['road']['start']
-    water_start = backgrounds[0]['water']['end']
-    water_end   = backgrounds[0]['water']['start']
-
+    frog = [x for x in config['images'] if x['name'] == 'frog'][0]
+    ouch = [x for x in config['images'] if x['name'] == 'ouch'][0]
+    background = [x for x in config['images'] if x['name'] == 'background'][0]
+    logs = [x for x in config['images'] if x['name'].startswith('log')]
+    cars = [x for x in config['images'] if x['name'].startswith('car')]
     config['hits'] = []
     has_collision = False
     car_hits = []
     log_miss = []
 
-    for frog in frogs:
-        rect = frog['rect']
+    if frog['rect'].y < background['road']['start'] and frog['rect'].y > background['road']['end']:
+        car_hits = [car for car in cars if frog['rect'].colliderect(car['rect'])]
+        if len(car_hits) > 0:
+            for car in car_hits: 
+                car['rect'].x = frog['rect'].x
+                car['sound']['fx'].play()
+                ouch['rect'] = car['rect']
+        
+    if frog['rect'].y < background['road']['end'] and frog['rect'].y > background['water']['end']:
+        log_hits = [log for log in logs if frog['rect'].colliderect(log['rect'])]
+        if len(log_hits):
+            frog['rect'].y =  log_hits[0]['rect'].y
+            frog['rect'].x =  log_hits[0]['rect'].x
+        
+    #if frog['rect'].y < background['water']['start'] and frog['rect'].y > background['water']['end']:
+    #    log_miss = [log for log in logs if not frog['rect'].colliderect(log['rect'])]
+    #    if len(log_hits):
+    #        for miss in log_miss:
+    #            print('Missed',log_miss)
+    #            miss['sound']['fx'].play()
+    #            ouch['rect'] = miss['rect']
 
-        if rect.y < road_end and rect.y > road_start:
-            car_hits = [car for car in cars if rect.colliderect(car['rect'])]
-            if len(car_hits) > 0:
-                for car in car_hits: 
-                    car['rect'].x = frog['rect'].x
-                    car['sound']['fx'].play()
-                    car['crash']['rect'] = car['rect']
-            
-        if rect.y < water_start and rect.y > water_end:
-            log_miss = [log for log in logs if not rect.colliderect(log['rect'])]
-            if len(log_miss): 
-                for miss in log_miss:
-                    miss['sound']['fx'].play()
-                    #log['miss']['rect'] = miss['rect']
+    if len(car_hits) > 0 : config['score']['status'] = 'COLLISION With Car'
+    if len(log_miss) > 0 : config['score']['status'] = 'Missed a log!'
 
-        if len(car_hits) > 0 : config['score']['status'] = 'COLLISION With Car'
-        if len(log_miss) > 0 : config['score']['status'] = 'Missed a log!'
-
-        has_collision = len(car_hits) + len(log_miss) > 0
-        if has_collision: 
-            pygame.mixer.music.fadeout(1000)
-
+    has_collision = len(car_hits) + len(log_miss) > 0
     return has_collision
 
 def Reset(config):
@@ -129,26 +147,27 @@ def Reset(config):
     return LoadImages(config)
 
 def Success(config):
-    water_end = config['objects']['backgrounds'][0]['water']['end']
-    for frog in config['objects']['frogs']:
-        success = frog['rect'].y < water_end - 10
-        if success: 
-            config['score']['status'] = 'SUCCESS'
-            config['score']['current'] += 1
-            return success
-    return False
+    frog = [x for x in config['images'] if x['name'] == 'frog'][0]
+    background = [x for x in config['images'] if x['name'] == 'background'][0]
+    success = frog['rect'].y < background['water']['end'] - 10
+    if success: 
+        config['score']['status'] = 'SUCCESS'
+        config['score']['current'] += 1
+    return success
 
 def GameOver(config):
     WHITE = (255,255,255)
+
     pygame.mixer.music.fadeout(3000)
     score = config['score']['current']
-    draw_text(config['screen'],f"GAME OVER! {config['score']['status']}", config['large_text']['font'], WHITE, 1000, 880)
-    draw_text(config['screen'],f'SCORE: {score}', config['large_text']['font'], WHITE, 1000, 900)
-    draw_text(config['screen'],'PRESS RETURN TO PLAY AGAIN',config['large_text']['font'], WHITE, 1000, 920)
+    #if score > config['score']['highest']: config['score']['highest'] = score
+    draw_text(config['screen'],f"GAME OVER! {config['score']['status']}", config['large_text']['font'], WHITE, 1000, 890)
+    draw_text(config['screen'],f'SCORE: {score}', config['large_text']['font'], WHITE, 1000, 910)
+    draw_text(config['screen'],'PRESS RETURN TO PLAY AGAIN',config['large_text']['font'], WHITE, 1000, 930)
     config = Reset(config)
 
 def Play(config):
-    pygame.mixer.music.play(-1,config['road_noise_volume'])
+    pygame.mixer.music.play(-1,config['road_noise_volume'])    
     game_over = False
     run = True
     while run:
@@ -159,7 +178,7 @@ def Play(config):
                 return
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE: config['jump'] = True
-                if event.key == pygame.K_UP: config['up'] = True
+                if event.key == pygame.K_UP: config['jump'] = True
                 if event.key == pygame.K_DOWN: config['back'] = True
                 if event.key == pygame.K_LEFT: config['left'] = True
                 if event.key == pygame.K_RIGHT: config['right'] = True
