@@ -25,240 +25,109 @@ frog:
   back:
   left:
   right:
+  up:
   bg_music:
   bg_music_volume:
   road_noise_fpath: 'sounds/road-noise.wav'
   road_noise_volume: 0.7
   water_noise_fpath: 
   water_noise_volume: 0.6
-  max_car_speed: 10
-  min_car_speed: 2
-  max_log_speed: 12
-  min_log_speed: 3
-  images: 
-    - name: 'background'
-      fpath: 'images/background.png'
+  max_frogs_speed: 10
+  min_frogs_speed: 2
+  max_cars_speed: 10
+  min_cars_speed: 2
+  max_logs_speed: 12
+  min_logs_speed: 3
+  backgrounds:
+      fpath: 'images/background*.png'
+      filename:
+      name:
       visible: True
       sound:
-        fpath: 
+        fpath: 'sounds/road-noise.wav'
         volume: 0.5
-        fx: None
-      start: 
-          x: 0
-          y: 0 
+        fx:
+      base: 
+          start: 940
+          end: 860
+          sound:
+            fpath: 'sounds/road-noise.wav'
+            volume: 0.5
+            fx:
       road:
-          start: 770
-          end: 450
+          start: 810
+          end: 470
+          sound:
+            fpath: 'sounds/road-noise.wav'
+            volume: 0.5
+            fx:
       water:
-          start: 410
-          end: 46
-      surface: None 
-      rect: None
-      speed: 0
-      jump_size: 0
-    - name: 'frog'
-      fpath: 'images/frog40.png'
+          start: 425
+          end: 50
+          sound:
+            fpath: 'sounds/road-noise.wav'
+            volume: 0.5
+            fx:
+      surface:
+      speed:
+      rect:
+  frogs: 
+      fpath: 'images/frog*.png'
+      name:
+      filename:
       visible: True
       sound:
         fpath: 'sounds/frog-jump01.mp3'
         volume: 0.5
-        fx: None
-      start: 
-          x: 640
-          y: 880
-      surface: None 
-      rect: None
-      speed: 4
-      jump_size: -40
-    - name: 'log1'
-      fpath: 'images/log.png'
+        fx:
+      surface: 
+      rect: 
+      speed: 40
+      jump: 40
+  logs:
+      fpath: 'images/log*.png'
+      filename:
+      name:
       visible: True
       sound:
-        fpath: sounds/watery-splash.wav
+        fpath: 'sounds/road-noise.wav'
         volume: 0.5
-        fx: None
-      start: 
-          x: 640
-          y: 300
-      surface: None 
-      rect: None
+        fx:
+      miss:
+        sound:
+          fpath: 'sounds/watery-splash.wav'
+          volume: 0.5
+          fx: 
+        image:
+          fpath: 'images/ouch64.png'
+          surface:
+          rect:
+      surface:
+      rect:
       speed: 8
-      jump_size: 0 # doesn't move on y axis
-    - name: 'log2'
-      fpath: 'images/log.png'
+  cars:
+      fpath: 'images/car*.png'
+      filename:
+      name:
       visible: True
       sound:
-        fpath: sounds/watery-splash.wav
+        fpath: 'sounds/road-noise.wav'
         volume: 0.5
-        fx: None
-      start: 
-          x: 640
-          y: 400
-      surface: None 
-      rect: None
-      speed: 7
-      jump_size: 0 # doesn't move on y axis
-    - name: 'log3'
-      fpath: 'images/log.png'
-      visible: True
-      sound:
-        fpath: sounds/watery-splash.wav
-        volume: 0.5
-        fx: None
-      start: 
-          x: 640
-          y: 430
-      surface: None 
-      rect: None
-      speed: 10
-      jump_size: 0 # doesn't move on y axis
-    - name: 'log4'
-      fpath: 'images/log.png'
-      visible: True
-      sound:
-        fpath: sounds/watery-splash.wav
-        volume: 0.5
-        fx: None
-      start: 
-          x: 640
-          y: 300
-      surface: None 
-      rect: None
+        fx:
+      crash:
+        sound:
+          fpath: 'sounds/car-crash.mp3'
+          volume: 0.5
+          fx: 
+        image:
+          fpath: 'images/ouch64.png'
+          surface:
+          rect:
+      surface:
+      rect:
       speed: 8
-      jump_size: 0 # doesn't move on y axis
-    - name: 'log5'
-      fpath: 'images/log.png'
-      visible: True
-      sound:
-        fpath: sounds/watery-splash.wav
-        volume: 0.5
-        fx: None
-      start: 
-          x: 640
-          y: 300
-      surface: None 
-      rect: None
-      speed: 8
-      jump_size: 0 # doesn't move on y axis
-    - name: 'log6'
-      fpath: 'images/log.png'
-      visible: True
-      sound:
-        fpath: sounds/watery-splash.wav
-        volume: 0.5
-        fx: None
-      start: 
-          x: 640
-          y: 300
-      surface: None 
-      rect: None
-      speed: 8
-      jump_size: 0 # doesn't move on y axis
-    - name: 'log7'
-      fpath: 'images/log.png'
-      visible: True
-      sound:
-        fpath: sounds/watery-splash.wav
-        volume: 0.5
-        fx: None
-      start: 
-          x: 640
-          y: 300
-      surface: None 
-      rect: None
-      speed: 8
-      jump_size: 0 # doesn't move on y axis
-    - name: 'log8'
-      fpath: 'images/log.png'
-      visible: True
-      sound:
-        fpath: sounds/watery-splash.wav
-        volume: 0.5
-        fx: None
-      start: 
-          x: 640
-          y: 300
-      surface: None 
-      rect: None
-      speed: 8
-      jump_size: 0 # doesn't move on y axis
-    - name: 'log9'
-      fpath: 'images/log.png'
-      visible: True
-      sound:
-        fpath: sounds/watery-splash.wav
-        volume: 0.5
-        fx: None
-      start: 
-          x: 640
-          y: 300
-      surface: None 
-      rect: None
-      speed: 8
-      jump_size: 0 # doesn't move on y axis
-    - name: 'log10'
-      fpath: 'images/log.png'
-      visible: True
-      sound:
-        fpath: sounds/watery-splash.wav
-        volume: 0.5
-        fx: None
-      start: 
-          x: 640
-          y: 300
-      surface: None 
-      rect: None
-      speed: 8
-      jump_size: 0 # doesn't move on y axis
-    - name: 'car1'
-      fpath: 'images/car.png'
-      visible: True
-      sound:
-        fpath: sounds/car-crash.mp3
-        volume: 0.5
-        fx: 
-      start: 
-          x: 640
-          y: 600
-      surface: None 
-      rect: None
-      speed: 8
-    - name: 'car2'
-      fpath: 'images/car.png'
-      visible: True
-      sound:
-        fpath: sounds/car-crash.mp3
-        volume: 0.5
-        fx: 
-      start: 
-          x: 640
-          y: 760
-      surface: None 
-      rect: None
-      speed: 6
-    - name: 'car3'
-      fpath: 'images/car.png'
-      visible: True
-      sound:
-        fpath: sounds/car-crash.mp3
-        volume: 0.5
-        fx: 
-      start: 
-          x: 640
-          y: 700
-      surface: None 
-      rect: None
-      speed: 7
-    - name: 'ouch'
-      fpath: 'images/ouch64.png'
-      visible: False
-      sound:
-        fpath: 
-        volume:
-        fx: None
-      start: 
-          x: 0
-          y: 0 
-      surface: None 
-      rect: None
-      speed: 0
+  objects: 
+    backgrounds:
+    frogs:
+    cars: 
+    logs: 
