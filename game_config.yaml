@@ -1,0 +1,38 @@
+game_title: 'frogger'
+screen_width: 1280  
+screen_height: 960
+frame_rate: 60
+base_start: 940
+base_end: 860
+road_start: 810
+road_end: 470
+water_start: 425
+water_end: 50
+num_backgrounds: 1
+background_image_fpath: 'images/background.png'
+num_frogs: 1
+frog_jump_speed: 6
+frog_min_speed: 2
+frog_max_speed: 6
+frog_image_fpath: 'images/frog.png'
+frog_jump_sound: 'sounds/frog-jump01.mp3'
+num_cars: 10
+car_spawn_rate: 500
+car_max_speed: 6
+car_min_speed: 1
+car_image_fpath: 'images/car.png'
+car_crash_fpath: 'images/ouch48.png'
+car_crash_sound: 'sounds/car-crash.mp3'
+car_crash_volume: 0.5
+num_logs: 90
+log_min_speed: 1
+log_max_speed: 4
+log_image_fpath: 'images/log.png'
+log_jump_sound: 'sounds/frog-jump01.mp3'
+large_text_size: 24
+large_text_font: 'lucida sans'
+small_text_size: 20
+small_text_font: 'Anonymous Pro'
+
+up_arrow: 'images/arrow-up.png'
+dn_arrow: 'images/arrow-down.png'
