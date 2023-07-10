@@ -1,10 +1,13 @@
 import pygame
 import yaml
 import properties
+import os
+from datetime import datetime
 
 pygame.font.init()
 large_text = pygame.font.SysFont(properties.LARGE_TEXT_FONT,properties.LARGE_TEXT_SIZE)
 small_text = pygame.font.SysFont(properties.SMALL_TEXT_FONT,properties.SMALL_TEXT_SIZE)
+medium_text = pygame.font.SysFont(properties.SMALL_TEXT_FONT,32)
 
 def GameIntro(game):
     screen = game['screen']
@@ -33,9 +36,26 @@ def GameWon(frogs):
             success = True
     return success
 
-def ReadConfig(filename):
-    with open(filename,'r') as fr:
-        return yaml.safe_load(fr)
+def draw_large_text(screen,text, text_colour, x, y):
+    font = large_text
+    img = font.render(text, True, text_colour)
+    width = img.get_width()
+    screen.blit(img, (x - (width / 2),y))
+    return width
+
+def draw_small_text(screen,text, text_colour, x, y):
+    font = small_text
+    img = font.render(text, True, text_colour)
+    width = img.get_width()
+    screen.blit(img,(x,y))
+    return width
+
+def draw_medium_text(screen,text, text_colour, x, y):
+    font = medium_text
+    img = font.render(text, True, text_colour)
+    width = img.get_width()
+    screen.blit(img,(x,y))
+    return width
 
 def draw_text(screen,text, font, text_col, x, y):
     img = font.render(text, True, text_col)
@@ -68,6 +88,21 @@ def SaveConfig(config,fpath):
     with open(fpath,'w') as fw:
         yaml.dump(config['cars'],fw)
 
+def SavePlayer(config):
+    fpath = config['player']['fpath']
+    backup = f'{fpath}.backup'
+    #print('SavePlayer',config['player'])
+    if os.path.exists(fpath):
+        os.replace(fpath,backup)
+    with open(fpath,'w') as fw:
+        yaml.dump(config,fw)
+
+def LoadPlayer(filename):
+    with open(filename,'r') as fr:
+        config = yaml.safe_load(fr)
+        #print('LoadPlayer',config['player'])
+        return config
+
 def car_hit(config,frogs,cars):
     for frog in frogs:
         if frog.rect.y >= config['road_end'] and frog.rect.y <= config['road_start']:
@@ -80,5 +115,10 @@ def log_miss(config,frogs,logs):
     for frog in frogs:
         if frog.rect.y > config['water_end'] and frog.rect.y < config['water_start'] - frog.rect.height:
             miss = not pygame.sprite.spritecollide(frog, logs, False)
-            print('log miss', miss)
+            #print('log miss', miss)
     return miss
+
+def tstamp():
+    dt = datetime.now()
+    dt_string = dt.strftime("%d/%m/%Y %H:%M:%S")
+    return dt_string

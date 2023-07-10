@@ -35,7 +35,7 @@ LOG_MAX_SPEED = 4
 LOG_IMAGE_FPATH = 'images/log.png'
 LOG_JUMP_SOUND = 'sounds/frog-jump01.mp3'
 
-LARGE_TEXT_SIZE = 24
+LARGE_TEXT_SIZE = 48
 LARGE_TEXT_FONT = 'Lucida Sans'
 
 SMALL_TEXT_SIZE = 20

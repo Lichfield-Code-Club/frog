@@ -3,8 +3,9 @@ from frogs import Frog
 from cars import Car
 from logs import Log
 from backgrounds import Background
-from utils import GameOver, ReadConfig, car_hit, log_miss, GameWon, GameIntro
-from status import StatusUpdate
+from utils import GameOver, SavePlayer,LoadPlayer, car_hit, log_miss, GameWon, tstamp
+from login import login
+from control import Control
 
 def InitGame(config):
     pygame.display.set_caption(config['game_title'])
@@ -14,6 +15,8 @@ def InitGame(config):
             'frogs': pygame.sprite.Group(),
             'cars': pygame.sprite.Group(),
             'logs': pygame.sprite.Group(),
+            'controls': pygame.sprite.Group(),
+            'buttons': pygame.sprite.Group(),
             'screen':  pygame.display.set_mode((config['screen_width'],config['screen_height'])),
             'clock':   pygame.time.Clock(),
             'large_text': pygame.font.SysFont(config['large_text_font'],config['large_text_size']),
@@ -24,18 +27,17 @@ def InitGame(config):
     [game['frogs'].add(Frog(config,game['screen'],id)) for id in range(config['num_frogs'])]
     [game['cars'].add(Car(config,game['screen'],id)) for id in range(config['num_cars'])]
     [game['logs'].add(Log(config,game['screen'],id)) for id in range(config['num_logs'])]
-
+    [game['buttons'].add(Control(game['screen'],btn)) for btn in config['buttons'] ]
     return game
 
 def GameUpdate(config,game):
     game['backgrounds'].update()
     game['cars'].update()
     game['logs'].update()
-    StatusUpdate(config,game)
+    #StatusUpdate(config,game)
     game['frogs'].update()
 
 def PlayGame(config,game):
-    game_paused = True
     game_over = False
     game_won = False
     run = True
@@ -53,9 +55,7 @@ def PlayGame(config,game):
             game_over = False
         if keys[pygame.K_ESCAPE]: run = False
 
-        if game_paused:
-            GameIntro(game)
-        elif game_won:
+        if game_won:
             print('Winner')
         elif game_over:
             GameOver(game)
@@ -71,11 +71,22 @@ def PlayGame(config,game):
 
 def main(config):
     game = InitGame(config)
-    PlayGame(config,game)
+    player_config = login(config,game)
+    start = tstamp()
+
+    if player_config['player']['valid']:
+        PlayGame(player_config,game)
+        session = {'end': tstamp(), 'start': start, 'score': None}
+        player_config['player']['runs'].append(session)
+        SavePlayer(player_config)
+    else:
+        print('Invalid Login')
+    return player_config
 
 if __name__ == '__main__':
     config_file = 'game_config.yaml'
-    config = ReadConfig(config_file)
+    config = LoadPlayer(config_file)
+    config['player']['valid'] = False
     pygame.init()
     main(config)
     pygame.quit()

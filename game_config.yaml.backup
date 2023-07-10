@@ -45,22 +45,19 @@ num_cars: 10
 num_frogs: 1
 num_logs: 90
 player:
+  end: 09/07/2023 15:01:38
   fpath: game_config.yaml
+  h: 40
   max_name_len: 10
-  name: 
+  name: mark
   runs:
   - end: null
     score: null
     start: 09/07/2023 14:56:42
   valid: true
-  name_box_h: 40
-  name_box_w: 300
-  name_box_x: 600
-  name_box_y: 260
-  history_box_h: 100
-  history_box_w: 700
-  history_box_x: 300
-  history_box_y: 600
+  w: 300
+  x: 600
+  y: 260
 road_end: 470
 road_start: 810
 screen_height: 960
