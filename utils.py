@@ -3,11 +3,34 @@ import yaml
 import properties
 import os
 from datetime import datetime
+from backgrounds import Background
+from frogs import Frog
+from cars import Car
+from logs import Log
 
 pygame.font.init()
 large_text = pygame.font.SysFont(properties.LARGE_TEXT_FONT,properties.LARGE_TEXT_SIZE)
 small_text = pygame.font.SysFont(properties.SMALL_TEXT_FONT,properties.SMALL_TEXT_SIZE)
 medium_text = pygame.font.SysFont(properties.SMALL_TEXT_FONT,32)
+
+def GameAssets(config):
+    assets = {
+            'backgrounds': pygame.sprite.Group(),
+            'frogs':       pygame.sprite.Group(),
+            'cars':        pygame.sprite.Group(),
+            'logs':        pygame.sprite.Group(),
+            'controls':    pygame.sprite.Group(),
+            'buttons':     pygame.sprite.Group(),
+            'screen':      pygame.display.get_surface(),
+            'clock':       pygame.time.Clock(),
+            'large_text':  pygame.font.SysFont(config['large_text_font'],config['large_text_size']),
+            'small_text':  pygame.font.SysFont(config['small_text_font'],config['small_text_size'])
+            }
+    [assets['backgrounds'].add(Background(config,assets['screen'],id)) for id in range(config['num_backgrounds'])]
+    [assets['frogs'].add(Frog(config,assets['screen'],id)) for id in range(config['num_frogs'])]
+    [assets['cars'].add(Car(config,assets['screen'],id)) for id in range(config['num_cars'])]
+    [assets['logs'].add(Log(config,assets['screen'],id)) for id in range(config['num_logs'])]
+    return assets
 
 def GameIntro(game):
     screen = game['screen']
@@ -40,7 +63,7 @@ def draw_large_text(screen,text, text_colour, x, y):
     font = large_text
     img = font.render(text, True, text_colour)
     width = img.get_width()
-    screen.blit(img, (x - (width / 2),y))
+    screen.blit(img, (x,y))
     return width
 
 def draw_small_text(screen,text, text_colour, x, y):
@@ -97,11 +120,26 @@ def SavePlayer(config):
     with open(fpath,'w') as fw:
         yaml.dump(config,fw)
 
-def LoadPlayer(filename):
-    with open(filename,'r') as fr:
+def BasePlayer(fpath):
+    with open(fpath,'r') as fr:
         config = yaml.safe_load(fr)
-        #print('LoadPlayer',config['player'])
         return config
+
+def LoadPlayer(config):
+    fpath = f"players/{config['player']['name']}.yaml"
+    #print('LoadPlayer: Old fpath', config['player']['fpath'])
+    #print('LoadPlayer: New fpath', fpath)
+    if not os.path.exists(fpath):
+        config['player']['fpath'] = fpath
+        #print('LoadPlayer: updated fpath', config['player']['fpath'])
+        SavePlayer(config)
+    if os.path.exists(fpath):
+        #print('Loading Player',fpath)
+        with open(fpath,'r') as fr:
+            config = yaml.safe_load(fr)
+
+    #print('LoadPlayer: RETURN fpath', config['player']['fpath'])
+    return config
 
 def car_hit(config,frogs,cars):
     for frog in frogs:

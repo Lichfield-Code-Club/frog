@@ -1,6 +1,5 @@
 import pygame
 from random import randint
-from utils import boundary_checks
 
 class Log(pygame.sprite.Sprite):
     def __init__(self,config,screen,id):
@@ -32,4 +31,4 @@ class Log(pygame.sprite.Sprite):
 
     def move(self):
         self.rect.x -= self.speed
-        self.rect = boundary_checks(self.rect,self.initial_rect)
+        #self.rect = boundary_checks(self.rect,self.initial_rect)
