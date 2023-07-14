@@ -1,27 +1,24 @@
-import sys
-import pygame
-from states.menu import Menu
-from states.gameplay import Gameplay
-from states.game_over import GameOver
-from states.splash import Splash
-from states.login import Login
+import pygame as pg
+from control import Control
+from menu import Menu
 from game import Game
-from utils import BasePlayer
+from login import Login
 
-pygame.init()
-screen = pygame.display.set_mode((1280,960))
-states = {
-    "MENU": Menu(),
-    "LOGIN": Login(),
-    "SPLASH": Splash(),
-    "GAMEPLAY": Gameplay(),
-    "GAME_OVER": GameOver(),
+import sys
+
+settings = {
+    'size':(1280,960),
+    'fps' :60
 }
-
-config_file = 'game_config.yaml'
-config = BasePlayer(config_file)
-
-game = Game(screen,config, states, "SPLASH")
-game.run()
-pygame.quit()
+  
+app = Control(**settings)
+state_dict = {
+    'menu': Menu(),
+    'game': Game(),
+    'login': Login()
+}
+pg.init()
+app.setup_states(state_dict, 'login')
+app.main_game_loop()
+pg.quit()
 sys.exit()

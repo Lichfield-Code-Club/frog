@@ -11,7 +11,7 @@ buttons:
   name: exit
   x: 700
   y: 400
-car_crash_fpath: images/ouch48.png
+car_crash_fpath: images/ouch25.png
 car_crash_sound: sounds/car-crash.mp3
 car_crash_volume: 0.5
 car_image_fpath: images/car.png
@@ -36,11 +36,14 @@ frog_max_speed: 6
 frog_min_speed: 2
 game_title: frogger
 large_text_font: lucida sans
-large_text_size: 24
+large_text_size: 48
+medium_text_font: lucida sans
+medium_text_size: 32
 log_image_fpath: images/log.png
 log_jump_sound: sounds/frog-jump01.mp3
 log_max_speed: 4
 log_min_speed: 1
+log_miss_fpath: images/ouch25.png
 login_btn: images/login.png
 num_backgrounds: 1
 num_cars: 10

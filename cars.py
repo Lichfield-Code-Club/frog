@@ -1,7 +1,7 @@
-import pygame
+import pygame as pg
 from random import randint
 
-class Car(pygame.sprite.Sprite):
+class Car(pg.sprite.Sprite):
     def __init__(self,config,screen,id):
         super().__init__()
 
@@ -9,9 +9,9 @@ class Car(pygame.sprite.Sprite):
         self.screen  = screen
         self.config = config
         self.fpath = self.config['car_image_fpath']
-        self.surface = pygame.image.load(self.fpath).convert_alpha()
+        self.surface = pg.image.load(self.fpath).convert_alpha()
         self.rect    = self.surface.get_rect()
-        self.mask    = pygame.mask.from_surface(self.surface)
+        self.mask    = pg.mask.from_surface(self.surface)
         self.max_x   = self.config['screen_width']
         self.min_y   = self.config['road_end']
         self.max_y   = self.config['road_start']
@@ -22,9 +22,9 @@ class Car(pygame.sprite.Sprite):
         self.initial_rect = self.rect
         self.crashed = False
         self.crash_fpath = self.config['car_crash_fpath']
-        self.crash_surface = pygame.image.load(self.crash_fpath).convert_alpha()
+        self.crash_surface = pg.image.load(self.crash_fpath).convert_alpha()
         self.crash_rect = self.crash_surface.get_rect()
-        self.crash_fx = pygame.mixer.Sound(self.config['car_crash_sound'])
+        self.crash_fx = pg.mixer.Sound(self.config['car_crash_sound'])
         self.crash_fx.set_volume(config['car_crash_volume'])
 
     def init_coords(self):
@@ -43,6 +43,8 @@ class Car(pygame.sprite.Sprite):
             self.screen.blit(self.surface,(self.rect.x, self.rect.y))
 
     def move(self):
-        self.rect.x -= self.speed
-        #self.rect  = boundary_checks(self.rect,self.initial_rect)
+        if self.rect.x - self.speed > 0:
+            self.rect.x -= self.speed
+        else:
+            self.rect.x = self.max_x
 

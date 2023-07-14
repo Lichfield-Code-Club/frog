@@ -1,43 +1,28 @@
-import pygame
+import pygame as pg
+from states import States
+from utils import BaseConfig, GameAssets, draw_zones, log_hit, got_home
 
-class Game(object):
-    def __init__(self, screen, config,states, start_state):
-        self.done = False
-        self.config = config
-        self.screen = screen
-        self.clock = pygame.time.Clock()
-        self.fps = 60
-        self.states = states
-        self.state_name = start_state
-        self.state = self.states[self.state_name]
+class Game(States):
+    def __init__(self):
+        States.__init__(self)
+        if States.settings == None: States.settings = BaseConfig()
+        if States.assets   == None: States.assets   = GameAssets(States.settings)
+        self.next = 'login'
 
-    def event_loop(self):
-        for event in pygame.event.get():
-            self.state.get_event(event)
+    def cleanup(self):
+        print('cleaning up Game state stuff')
+    def startup(self):
+        print('starting Game state stuff')
+    def get_event(self, event):
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_ESCAPE: 
+                self.done = True
+    def update(self, screen, dt):
+        self.draw(screen,dt)
 
-    def flip_state(self):
-        current_state = self.state_name
-        next_state = self.state.next_state
-        self.state.done = False
-        self.state_name = next_state
-        persistent = self.state.persist
-        self.state = self.states[self.state_name]
-        self.state.startup(persistent)
-
-    def update(self, dt):
-        if self.state.quit:
-            self.done = True
-        elif self.state.done:
-            self.flip_state()
-        self.state.update(dt)
-
-    def draw(self):
-        self.state.draw(self.screen)
-
-    def run(self):
-        while not self.done:
-            dt = self.clock.tick(self.fps)
-            self.event_loop()
-            self.update(dt)
-            self.draw()
-            pygame.display.update()
+    def draw(self, screen,dt):
+        States.assets['backgrounds'].update()
+        States.assets['cars'].update()
+        States.assets['logs'].update()
+        States.assets['frogs'].update()
+        draw_zones(States.assets,States.settings)

@@ -1,28 +1,36 @@
-import pygame
-from random import randint
+import pygame as pg
 
-class Control(pygame.sprite.Sprite):
-    def __init__(self,screen,btn):
-        super().__init__()
-
-        self.screen   = screen
-        self.name     = btn['name']
-        self.image    = btn['image']
-        self.x        = btn['x']
-        self.y        = btn['y']
-        self.btn      = pygame.image.load(self.image).convert_alpha()
-        self.img_rect = self.btn.get_rect()
-        self.img_rect.x = self.x
-        self.img_rect.y = self.y
-        self.clicked = False
-        self.action  = False
-
-    def update(self):
-        pos = pygame.mouse.get_pos()
-        if self.img_rect.collidepoint(pos):
-            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
-                self.clicked = True
-                self.action = True
-        if pygame.mouse.get_pressed()[0] == 0:
-            self.clicked = False
-        self.screen.blit(self.btn, (self.img_rect.x, self.img_rect.y))
+class Control:
+    def __init__(self, **settings):
+        self.__dict__.update(settings)
+        self.done = False
+        self.screen = pg.display.set_mode(self.size)
+        self.clock = pg.time.Clock()
+    def setup_states(self, state_dict, start_state):
+        self.state_dict = state_dict
+        self.state_name = start_state
+        self.state = self.state_dict[self.state_name]
+    def flip_state(self):
+        self.state.done = False
+        previous,self.state_name = self.state_name, self.state.next
+        self.state.cleanup()
+        self.state = self.state_dict[self.state_name]
+        self.state.startup()
+        self.state.previous = previous
+    def update(self, dt):
+        if self.state.quit:
+            self.done = True
+        elif self.state.done:
+            self.flip_state()
+        self.state.update(self.screen, dt)
+    def event_loop(self):
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                self.done = True
+            self.state.get_event(event)
+    def main_game_loop(self):
+        while not self.done:
+            delta_time = self.clock.tick(self.fps)/1000.0
+            self.event_loop()
+            self.update(delta_time)
+            pg.display.update()

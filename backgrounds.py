@@ -1,5 +1,4 @@
 import pygame
-import properties
 from random import randint
 
 class Background(pygame.sprite.Sprite):
