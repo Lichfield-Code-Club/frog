@@ -2,7 +2,7 @@ import pygame as pg
 from control import Control
 from menu import Menu
 from game import Game
-from login import Login
+from classes.login import Login
 
 import sys
 

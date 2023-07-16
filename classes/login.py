@@ -3,7 +3,7 @@ import pygame as pg
 import os
 from states import States
 from utils import draw_large_text, draw_medium_text, LoadPlayer
-from button import Button
+from classes.button import Button
 
 class Login(States):
     def __init__(self):

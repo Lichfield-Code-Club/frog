@@ -2,10 +2,10 @@ import pygame as pg
 import yaml
 import os
 from datetime import datetime
-from backgrounds import Background
-from frogs import Frog
-from cars import Car
-from logs import Log
+from classes.backgrounds import Background
+from classes.frogs import Frog
+from classes.cars import Car
+from classes.logs import Log
 
 def BaseConfig():
     fpath = 'game_config.yaml'
