@@ -1,3 +1,4 @@
+back_btn: images/back64_btn.png
 background_image_fpath: images/background.png
 base_end: 860
 base_start: 940
@@ -40,24 +41,30 @@ log_image_fpath: images/log.png
 log_jump_sound: sounds/frog-jump01.mp3
 log_max_speed: 4
 log_min_speed: 1
+login_btn: images/login.png
 num_backgrounds: 1
 num_cars: 10
 num_frogs: 1
 num_logs: 90
+play_btn: images/play64.png
 player:
-  end: 09/07/2023 15:01:38
   fpath: game_config.yaml
-  h: 40
+  history_box_h: 100
+  history_box_w: 700
+  history_box_x: 300
+  history_box_y: 600
   max_name_len: 10
-  name: mark
+  name: null
+  name_box_h: 40
+  name_box_w: 300
+  name_box_x: 600
+  name_box_y: 260
   runs:
   - end: null
     score: null
     start: 09/07/2023 14:56:42
   valid: true
-  w: 300
-  x: 600
-  y: 260
+quit_btn: images/quit_btn.png
 road_end: 470
 road_start: 810
 screen_height: 960

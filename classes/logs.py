@@ -1,6 +1,5 @@
 import pygame
 from random import randint
-from utils import boundary_checks
 
 class Log(pygame.sprite.Sprite):
     def __init__(self,config,screen,id):
@@ -31,5 +30,7 @@ class Log(pygame.sprite.Sprite):
         self.screen.blit(self.surface,(self.rect.x, self.rect.y))
 
     def move(self):
-        self.rect.x -= self.speed
-        self.rect = boundary_checks(self.rect,self.initial_rect)
+        if self.rect.x - self.speed > 0:
+            self.rect.x -= self.speed
+        else:
+            self.rect.x = self.config['screen_width']

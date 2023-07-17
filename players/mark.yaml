@@ -1,3 +1,4 @@
+back_btn: images/back64_btn.png
 background_image_fpath: images/background.png
 base_end: 860
 base_start: 940
@@ -10,7 +11,7 @@ buttons:
   name: exit
   x: 700
   y: 400
-car_crash_fpath: images/ouch48.png
+car_crash_fpath: images/ouch64.png
 car_crash_sound: sounds/car-crash.mp3
 car_crash_volume: 0.5
 car_image_fpath: images/car.png
@@ -35,21 +36,25 @@ frog_max_speed: 6
 frog_min_speed: 2
 game_title: frogger
 large_text_font: lucida sans
-large_text_size: 24
+large_text_size: 48
 log_image_fpath: images/log.png
 log_jump_sound: sounds/frog-jump01.mp3
 log_max_speed: 4
 log_min_speed: 1
+login_btn: images/login.png
+medium_text_font: lucida sans
+medium_text_size: 32
 num_backgrounds: 1
 num_cars: 10
 num_frogs: 1
 num_logs: 90
+play_btn: images/play64.png
 player:
   fpath: players/mark.yaml
   history_box_h: 100
   history_box_w: 700
-  history_box_x: 200
-  history_box_y: 760
+  history_box_x: 300
+  history_box_y: 600
   max_name_len: 10
   name: mark
   name_box_h: 40
@@ -57,61 +62,11 @@ player:
   name_box_x: 600
   name_box_y: 260
   runs:
-  - end: 10/07/2023 08:32:17
-    score: null
-    start: 10/07/2023 08:32:14
-  - end: 09/07/2023 17:39:32
-    score: null
-    start: 09/07/2023 17:39:32
-  - end: 09/07/2023 17:35:51
-    score: null
-    start: 09/07/2023 17:35:49
-  - end: 09/07/2023 17:28:38
-    score: null
-    start: 09/07/2023 17:28:36
-  - end: 09/07/2023 17:23:56
-    score: null
-    start: 09/07/2023 17:23:54
-  - end: 09/07/2023 17:21:33
-    score: null
-    start: 09/07/2023 17:21:30
-  - end: 09/07/2023 17:21:16
-    score: null
-    start: 09/07/2023 17:21:15
-  - end: 09/07/2023 17:11:12
-    score: null
-    start: 09/07/2023 17:11:08
-  - end: 09/07/2023 17:02:48
-    score: null
-    start: 09/07/2023 17:02:46
-  - end: 09/07/2023 16:55:04
-    score: null
-    start: 09/07/2023 16:55:03
-  - end: 09/07/2023 16:48:50
-    score: null
-    start: 09/07/2023 16:48:48
-  - end: 09/07/2023 16:45:17
-    score: null
-    start: 09/07/2023 16:45:13
-  - end: 09/07/2023 16:44:59
-    score: null
-    start: 09/07/2023 16:44:55
   - end: null
     score: null
     start: 09/07/2023 14:56:42
-  - end: 09/07/2023 17:32:29
-    score: null
-    start: 09/07/2023 17:32:27
-  - end: 09/07/2023 17:36:27
-    score: null
-    start: 09/07/2023 17:36:25
-  - end: 10/07/2023 08:32:03
-    score: null
-    start: 10/07/2023 08:32:00
-  - end: 10/07/2023 08:37:24
-    score: null
-    start: 10/07/2023 08:37:19
   valid: true
+quit_btn: images/quit_btn.png
 road_end: 470
 road_start: 810
 screen_height: 960
