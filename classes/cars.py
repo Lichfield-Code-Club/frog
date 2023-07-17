@@ -1,4 +1,5 @@
 import pygame as pg
+import glob
 from random import randint
 
 class Car(pg.sprite.Sprite):
@@ -9,7 +10,7 @@ class Car(pg.sprite.Sprite):
         self.screen  = screen
         self.config = config
         self.fpath = self.config['car_image_fpath']
-        self.surface = pg.image.load(self.fpath).convert_alpha()
+        self.surface, self.rect = self.random_car()
         self.rect    = self.surface.get_rect()
         self.mask    = pg.mask.from_surface(self.surface)
         self.max_x   = self.config['screen_width']
@@ -48,3 +49,11 @@ class Car(pg.sprite.Sprite):
         else:
             self.rect.x = self.max_x
 
+    def random_car(self):
+        cars = glob.glob('images/*car*.png')
+        if cars and len(cars):
+            x = randint(0,len(cars)-1)
+            fpath = cars[x]
+            surface = pg.image.load(fpath).convert_alpha()
+            rect    = surface.get_rect()
+            return surface,rect
