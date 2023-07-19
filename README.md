@@ -8,7 +8,7 @@
 
 # Step3
 * Adding a frog image
-** Please modify the code to draw the frog in the right place
+* Please modify the code to draw the frog in the right place
 
 # Step4
 * Make the frog move
@@ -28,3 +28,12 @@
 * but that's not good programming practice.
 * There an idiom called DRY which means Don't Repeat Yourself
 * we now need to use arrays/lists
+
+# Step9
+* Make the cars and logs move
+
+# Step10
+* Make frog move while pressing keys
+
+# Step11
+* Add collision detection
