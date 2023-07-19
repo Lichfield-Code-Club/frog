@@ -21,7 +21,7 @@ frog_rect = frog_img.get_rect()
 frog_rect.x = 400  # Anywhere from zero to screen width
 frog_rect.y = 400  # Anywhere before the road starts
 
-# line 41: set a vraible called 'speed' to 10 to control how far the frog moves
+# line 41: set a varible called 'speed' to 10 to control how far the frog moves
 # line 42: we set a variable called 'run' to True
 # line 43: while 'run' is 'True' the game repeatedly loops through lines 43 to 57
 # line 45: looks for events
