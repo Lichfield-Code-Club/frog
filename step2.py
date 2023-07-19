@@ -28,25 +28,23 @@ print('Background Image height', bg_rect.height)
 
 # We can control where the image is displayed by
 # changing the x and y coordinates
-# for backgrounds it's usually 0,0, which is top left corner
+# for backgrounds the x and y coordinates are usually 0,0, which is the top left corner
 
-# we set a variable call run to true
-# line 44: while run is true the game repeatedly loops through the code
-# line 46: looks for events
-# line 47: checks to see if it's a quit event 
-# the quit event is when the x in the top right of the window is clicked
-# line 48: we set the run value to False
-# If it's not a quit
-# line 50: we move the image to the 'display' using blit, BLock Image Transfer
-# line 51: and then update what we see
+# line 42: we set a variable called 'run' to True
+# line 43: while 'run' is True the game repeatedly loops through lines 43 to 49
+# line 45: looks for events
+# line 46: checks to see if the event is a QUIT event 
+#   the QUIT event is when the x in the top right corner of the window is clicked
+# line 47: we set the value of 'run' to False
+# line 48: we move the image to the 'display' using blit, BLock Image Transfer
+# line 49: update what is shown on the screen
 
 run = True
 while run: 
-   clock.tick(FPS)
-   for event in pygame.event.get():
-    if event.type == pygame.QUIT:
-       run = False
-    else:
-        screen.blit(bg_img, (bg_rect.x,bg_rect.y))
-        pygame.display.update()
+    clock.tick(FPS)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            run = False
+    screen.blit(bg_img, (bg_rect.x,bg_rect.y))
+    pygame.display.update()
 pygame.quit()

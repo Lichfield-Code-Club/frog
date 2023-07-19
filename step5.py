@@ -29,27 +29,33 @@ print('Background Image y coordinate', bg_rect.y)
 print('Background Image width',        bg_rect.width)
 print('Background Image height',       bg_rect.height)
 # === PUT CODE HERE TO SET THE COORDINATES OF THE FROG IMAGE HERE ====
+frog_rect.x = 400  # Anywhere from zero to screen width
+frog_rect.y = 400  # Anywhere before the road starts
 
 # We can control where the image is displayed by
 # changing the x and y coordinates
 # for backgrounds it's usually 0,0, which is top left corner
 
-# line 48: we set a variable call 'run' to True
-# line 49: while 'run' is True the game repeatedly loops through lines 48 to 55
-# line 50: looks for events
-# line 51: checks to see if the event is a QUIT event 
-#   the QUIT event is when the x in the top right corner of the window is clicked
-# line 52: we set the run value to False
-# line 53: we move the background image to the 'display' using blit, BLock Image Transfer
-# line 54: we move the frog image to the 'display' using blit, BLock Image Transfer
-# line 55: and then update what we see on the screen
+# line 51: we set a variable called 'run' to True
+# line 52: while 'run' is True the game repeatedly loops through lines 52 to 61
+# line 54: looks for events
+# line 55: checks to see if the event is a QUIT event 
+#    the QUIT event is when the x in the top right of the window is clicked
+# line 56: we set the value of 'run' to False
+# line 57: if the right hand edge of the from rectangle hasn't reach the screen edge
+# line 58:    increase the x coordinate by 1 pixel
+# line 59: we move the background image to the 'display' using blit, BLock Image Transfer
+# line 60: we move the frog image to the 'display' using blit, BLock Image Transfer
+# line 61: and then update what we see on the screen
 
 run = True
 while run: 
-   clock.tick(FPS)
-   for event in pygame.event.get():
-    if event.type == pygame.QUIT:
-       run = False
+    clock.tick(FPS)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            run = False
+    if frog_rect.x +1 < SCREEN_WIDTH - frog_rect.width:
+        frog_rect.x += 1
     screen.blit(bg_img, (bg_rect.x,bg_rect.y))
     screen.blit(frog_img, (frog_rect.x,frog_rect.y))
     pygame.display.update()
