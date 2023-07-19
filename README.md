@@ -1,7 +1,7 @@
 # Step1
 * This is the basis of a pygame.
-** It draws a window, listens for the quit event and closes the window
-** Note that the lines in the 'while' loop are repeated 60 times each second 
+* It draws a window, listens for the quit event and closes the window
+* Note that the lines in the 'while' loop are repeated 60 times each second 
 
 # Step2
 * Adding a background image
